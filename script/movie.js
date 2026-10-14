@@ -14,7 +14,7 @@ searchForm.addEventListener('submit', function(e) {
 
 async function searchMovie(keyword) {
     grid.innerHTML = `
-        <div class="spinner-border" role="status">
+        <div class="spinner-border mx-auto" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     `;
@@ -27,10 +27,10 @@ async function searchMovie(keyword) {
             console.log(data);
             render(data.Search);
         } else {
-            alert('error 1')
+            alert('Movie not found');
         }
     } catch (error) {
-        alert('error 2');
+        alert('Failed to fetch movies');
     }
 }
 
@@ -39,11 +39,14 @@ function render(movies) {
 
     movies.forEach(function(movie) {
         const movieItem = `
-            <div class="col card p-0 m-2 border-0" style="min-width: 12rem; background-image: url(${movie.Poster});">
+            <div class="col card p-0 m-2 border-0" style="background-image: url(${movie.Poster});">
                 <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}">
-                <div class="card-body" style="background-color: #77777777; backdrop-filter: blur(40px)">
+                <div class="card-body">
                     <h5 class="card-title">${movie.Title}</h5>
                     <p class="card-text">${movie.Year}</p>
+                </div>
+                <div class="card-footer text-body-secondary">
+                    <button type="button" class="btn btn-primary" onclick="addWatchlist('${movie.imdbID}')">Watchlist</button>
                 </div>
             </div>
         `;
@@ -52,3 +55,20 @@ function render(movies) {
     });
 }
 
+async function addWatchlist(movieID) {
+    try {
+        const response = await fetch(`https://www.omdbapi.com/?apikey=${apikey}&i=${movieID}`);
+        const movie = await response.json();
+        console.log(movie);
+
+        let savedMovies = [];
+        const saved = localStorage.getItem('savedMovies');
+        if (saved) {
+            savedMovies = JSON.parse(saved);
+        }
+        savedMovies.push(movie);
+        localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
+    } catch (error) {
+        alert('Could not find movie ID');
+    }
+}
