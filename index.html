@@ -24,11 +24,8 @@
             border-radius: 12px;
         }
 
-        .card-footer {
+        .card-body{
             border-radius: 0 0 12px 12px;
-        }
-
-        .card-body, .card-footer {
             background-color: #22222288;
             backdrop-filter: blur(30px)
         }
@@ -36,7 +33,7 @@
 </head>
 <body data-bs-theme="dark">
     <header class="position-sticky top-0 z-3">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary  px-5">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary px-5">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Navbar</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,8 +60,8 @@
             <button type="submit" class="btn btn-danger input-group-text z-0" id="inputGroup-sizing-default">Search</button>
         </form>
 
-        <div class="container text-center">
-            <div class="row" id="movieGrid">
+        <div class="container text-center mt-5">
+            <div class="row g-4 justify-content-center" id="movieGrid">
             </div>
         </div>
     </main>

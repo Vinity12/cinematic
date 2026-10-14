@@ -39,14 +39,15 @@ function render(movies) {
 
     movies.forEach(function(movie) {
         const movieItem = `
-            <div class="col card p-0 m-2 border-0" style="background-image: url(${movie.Poster});">
-                <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}">
-                <div class="card-body">
+            <div class="col-12 col-sm-2 col-md-4 col-lg-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
+                <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}" onerror="handleImageError(this)">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">${movie.Title}</h5>
                     <p class="card-text">${movie.Year}</p>
-                </div>
-                <div class="card-footer text-body-secondary">
-                    <button type="button" class="btn btn-primary" onclick="addWatchlist('${movie.imdbID}')">Watchlist</button>
+
+                    <button type="button" class="btn btn-primary mt-auto w-auto" onclick="addWatchlist('${movie.imdbID}')">
+                        Watchlist
+                    </button>
                 </div>
             </div>
         `;
@@ -71,4 +72,10 @@ async function addWatchlist(movieID) {
     } catch (error) {
         alert('Could not find movie ID');
     }
+}
+
+function handleImageError(img) {
+    console.log("Image not found:", img.src);
+    img.onerror = null;
+    img.src = "https://via.placeholder.com/300x450?text=No+Image";
 }
