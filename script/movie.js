@@ -9,6 +9,8 @@ searchForm.addEventListener('submit', function(e) {
 
     if (query != '') {
         searchMovie(query);
+    } else {
+        localStorage.clear();
     }
 });
 
@@ -17,6 +19,7 @@ async function searchMovie(keyword) {
         <div class="spinner-border mx-auto" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
+        <p>Searching...</p>
     `;
 
     try {
@@ -27,10 +30,10 @@ async function searchMovie(keyword) {
             console.log(data);
             render(data.Search);
         } else {
-            alert('Movie not found');
+            grid.innerHTML = '<p class="text-center">Movie not found</p>';
         }
     } catch (error) {
-        alert('Failed to fetch movies');
+        grid.innerHTML = '<p class="text-center">Failed to fetch movies due to connection issue</p>';
     }
 }
 
@@ -59,18 +62,19 @@ function render(movies) {
 async function addWatchlist(movieID) {
     try {
         const response = await fetch(`https://www.omdbapi.com/?apikey=${apikey}&i=${movieID}`);
-        const movie = await response.json();
-        console.log(movie);
+        const movieJson = await response.json();
+        console.log(movieJson);
 
-        let savedMovies = [];
+        let savedMovies = {};
         const saved = localStorage.getItem('savedMovies');
         if (saved) {
             savedMovies = JSON.parse(saved);
         }
-        savedMovies.push(movie);
+        savedMovies[movieID] = movieJson;
         localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
+        alert('Successfully added to watchlist');
     } catch (error) {
-        alert('Could not find movie ID');
+        alert('Failed to add to watchlist');
     }
 }
 
