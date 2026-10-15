@@ -5,41 +5,23 @@ async function searchMovie(keyword) {
     grid.innerHTML = '';
     if (keyword == '') {
         loadMovie();
-    } else if (Object.keys(movies).length === 0) {
         return;
     }
 
-    keyword.toLowerCase();
-    const movies = localStorage.getItem('savedMovies').filter(movie => movie.Title.toLowerCase().includes(keyword));
+    const savedMovies = JSON.parse(localStorage.getItem('savedMovies') || '{}');
+    const movies = Object.values(savedMovies).filter(movie => movie.Title.toLowerCase().includes(keyword.toLowerCase()));
 
-    Object.keys(movies).forEach(function(key) {
-        const movie = movies[key];
+    console.log(movies);
 
-        const movieItem = `
-            <div class="col-12 col-sm-2 col-md-4 col-lg-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
-                <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}" onerror="handleImageError(this)">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${movie.Title}</h5>
-                    <p class="card-text">${movie.Year}</p>
-                    <button type="button" class="btn btn-danger mt-auto w-auto" onclick="removeFromWatchlist('${movie.imdbID}')">
-                        Remove from Watchlist
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        grid.innerHTML += movieItem;
-    });
+    if (movies.length === 0) {
+        grid.innerHTML = '<p class="text-center">Movie not found in your watchlist</p>';
+        return;
+    }
+
+    movies.forEach(movie => {grid.innerHTML += movieCard(movie, btnAction.REMOVE)});
 }
 
 async function loadMovie() {
-    grid.innerHTML = `
-        <div class="spinner-border mx-auto" role="status">
-            <span class="visually-hidden"></span>
-        </div>
-        <p>Loading...</p>
-    `;
-
     const savedMovies = localStorage.getItem("savedMovies");
     render(savedMovies ? JSON.parse(savedMovies) : {});
 }
@@ -54,21 +36,8 @@ function render(movies) {
 
     Object.keys(movies).forEach(function(key) {
         const movie = movies[key];
-        const movieItem = `
-            <div class="col-12 col-sm-2 col-md-4 col-lg-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
-                <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}" onerror="handleImageError(this)">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${movie.Title}</h5>
-                    <p class="card-text">${movie.Year}</p>
 
-                    <button type="button" class="btn btn-danger mt-auto w-auto" onclick="removeFromWatchlist('${movie.imdbID}')">
-                        Remove from Watchlist
-                    </button>
-                </div>
-            </div>
-        `;
-
-        grid.innerHTML += movieItem;
+        grid.innerHTML += movieCard(movie, btnAction.REMOVE);
     });
 }
 
@@ -79,8 +48,9 @@ async function removeFromWatchlist(movieID) {
         console.log(`successfully deleted ${movieID}`);
         localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
         loadMovie();
+        showToast('Deleted from watchlist');
     } catch (error) {
-        alert('Could not find movie ID');
+        showToast('Could not find movie ID');
     }
 }
 
