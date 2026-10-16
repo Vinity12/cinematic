@@ -9,28 +9,33 @@ searchForm.addEventListener('submit', function(e) {
 
     if (query != '') {
         searchMovie(query);
-    } else {
-        localStorage.clear();
     }
 });
 
 async function searchMovie(keyword) {
     grid.innerHTML = `
         <div class="spinner-border mx-auto" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden"</span>
         </div>
-        <p>Searching...</p>
+        <p>Loading...</p>
     `;
 
     try {
         const response = await fetch(`https://www.omdbapi.com/?apikey=${apikey}&s=${keyword}`);
         const data = await response.json();
+        const page = Math.ceil(data.totalResults / 10);
+        grid.innerHTML = '';
 
-        if (data.Response === "True") {
-            console.log(data);
-            render(data.Search);
-        } else {
-            grid.innerHTML = '<p class="text-center">Movie not found</p>';
+        for (let p = 1; p <= page; p++) {
+            const responsePage = await fetch(`https://www.omdbapi.com/?apikey=${apikey}&s=${keyword}&page=${p}`);
+            const dataPage = await responsePage.json();
+
+            if (dataPage.Response === "True") {
+                console.log(dataPage);
+                render(dataPage.Search);
+            } else {
+                grid.innerHTML = '<p class="text-center">Movie not found</p>';
+            }
         }
     } catch (error) {
         grid.innerHTML = '<p class="text-center">Failed to fetch movies due to connection issue</p>';
@@ -38,10 +43,8 @@ async function searchMovie(keyword) {
 }
 
 function render(movies) {
-    grid.innerHTML = '';
-
     movies.forEach(movie => {
-        if (JSON.parse(localStorage.getItem('savedMovies')).hasOwnProperty(movie.imdbID)) {
+        if ((localStorage.getItem('savedMovies') ? JSON.parse(localStorage.getItem('savedMovies')) : {}).hasOwnProperty(movie.imdbID)) {
             grid.innerHTML += movieCard(movie, btnAction.ADDED);
         } else {
             grid.innerHTML += movieCard(movie, btnAction.ADD);
@@ -55,11 +58,8 @@ async function addWatchlist(movieID) {
         const movieJson = await response.json();
         console.log(movieJson);
 
-        let savedMovies = {};
-        const saved = localStorage.getItem('savedMovies');
-        if (saved) {
-            savedMovies = JSON.parse(saved);
-        }
+        const savedMovies = localStorage.getItem('savedMovies') ? JSON.parse(localStorage.getItem('savedMovies')) : {};
+
         savedMovies[movieID] = movieJson;
         localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
         
@@ -69,5 +69,21 @@ async function addWatchlist(movieID) {
         showToast('Added to watchlist');
     } catch (error) {
         showToast('Failed to add to watchlist');
+    }
+}
+
+async function removeFromWatchlist(movieID) {
+    try {
+        let savedMovies = JSON.parse(localStorage.getItem('savedMovies')) || {};
+        delete savedMovies[movieID];
+        console.log(`successfully deleted ${movieID}`);
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+
+        const query = searchInput.value.trim();
+        searchMovie(query);
+
+        showToast('Deleted from watchlist');
+    } catch (error) {
+        showToast('Could not find movie ID');
     }
 }

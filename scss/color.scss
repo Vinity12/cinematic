@@ -1,0 +1,11 @@
+@import "../bootstrap/scss/functions";
+
+$body-bg-dark: #121216;
+$body-secondary-bg-dark: #191a24;       
+$body-tertiary-bg-dark: #0a0a1a;
+
+@import "../bootstrap/scss/variables";
+@import "../bootstrap/scss/variables-dark"; 
+@import "../bootstrap/scss/maps";
+@import "../bootstrap/scss/mixins";
+@import "../bootstrap/scss/bootstrap";

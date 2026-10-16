@@ -1,0 +1,33 @@
+nav, main, footer {
+    max-width: 1400px;
+    margin: auto;
+}
+
+main {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+.card {
+    min-width: 12rem;
+    max-width: 70%;
+    text-align: left;
+    box-shadow: 0 10px 16px #00000055;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.card-img-top {
+    border-radius: 12px 12px 0 0;
+}
+
+.card-body{
+    border-radius: 0 0 12px 12px;
+    background-color: #22222288;
+    backdrop-filter: blur(30px)
+}

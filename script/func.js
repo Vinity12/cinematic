@@ -15,7 +15,7 @@ function movieCard(movie, action) {
         action = {
             class: 'btn-warning btn-outline-light',
             text: 'Watchlisted',
-            clickFunction: 'addWatchlist'
+            clickFunction: 'removeFromWatchlist'
         }
     } else {
         action = {
@@ -26,7 +26,7 @@ function movieCard(movie, action) {
     }
 
     return `
-        <div class="col-12 col-sm-2 col-md-4 col-lg-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
+        <div class="col-3 col-sm-7 col-md-4 col-lg-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
             <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}" onerror="handleImageError(this)">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${movie.Title}</h5>
