@@ -26,9 +26,9 @@ function movieCard(movie, action) {
     }
 
     return `
-        <div class="col-3 col-sm-7 col-md-4 col-lg-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
+        <div class="col-2 card p-0 m-2 border-0 movie-card" style="background-image: url('${movie.Poster}');">
             <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}" onerror="handleImageError(this)">
-            <div class="card-body d-flex flex-column">
+            <div class="card-body bg-blur d-flex flex-column">
                 <h5 class="card-title">${movie.Title}</h5>
                 <p class="card-text">${movie.Year}</p>
                 <button type="button" class="btn ${action.class} fw-bold mt-auto w-auto" onclick="${action.clickFunction}('${movie.imdbID}')">

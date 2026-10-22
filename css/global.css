@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "Blacklisted";
+    src: url("../asset/fonts/Blacklisted.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "CaviarDreams";
+    src: url("../asset/fonts/CaviarDreams.ttf") format("opentype");
+}
+
 nav, main, footer {
     max-width: 1400px;
     margin: auto;
@@ -7,12 +17,33 @@ main {
     text-align: center;
 }
 
+.title {
+    font-family: "Blacklisted";
+}
+
+.subtitle {
+    font-family: "CaviarDreams";
+}
+
 h1 {
-    font-size: 3em;
+    font-size: 5em;
+}
+
+h2 {
+    font-size: 3.5em;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+.bg-blur {
+    backdrop-filter: blur(30px);
 }
 
 .card {
-    min-width: 12rem;
+    min-width: 10rem;
+    width: 20%;
     max-width: 70%;
     text-align: left;
     box-shadow: 0 10px 16px #00000055;
@@ -29,5 +60,14 @@ h1 {
 .card-body{
     border-radius: 0 0 12px 12px;
     background-color: #22222288;
-    backdrop-filter: blur(30px)
 }
+
+/* @media (max-width: 768px) {
+    .card-img-top {
+        border-radius: 12px 0 0 12px;
+    }
+
+    .card-body{
+        border-radius: 0 12px 12px 0;
+    }
+} */

@@ -1,7 +1,7 @@
 const apikey = '49cb96f4';
 const grid = document.getElementById('movieGrid');
 
-async function searchMovie(keyword) {
+function searchMovie(keyword) {
     grid.innerHTML = '';
     if (keyword == '') {
         loadMovie();
@@ -21,7 +21,7 @@ async function searchMovie(keyword) {
     movies.forEach(movie => {grid.innerHTML += movieCard(movie, btnAction.REMOVE)});
 }
 
-async function loadMovie() {
+function loadMovie() {
     const savedMovies = localStorage.getItem("savedMovies");
     render(savedMovies ? JSON.parse(savedMovies) : {});
 }
@@ -41,13 +41,20 @@ function render(movies) {
     });
 }
 
-async function removeFromWatchlist(movieID) {
+function removeFromWatchlist(movieID) {
     try {
         let savedMovies = JSON.parse(localStorage.getItem('savedMovies')) || {};
         delete savedMovies[movieID];
         console.log(`successfully deleted ${movieID}`);
         localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-        loadMovie();
+
+        const query = searchInput ? searchInput.value.trim() : '';
+        if (query !== '') {
+            searchMovie(query);
+        } else {
+            loadMovie();
+        }
+
         showToast('Deleted from watchlist');
     } catch (error) {
         showToast('Could not find movie ID');
