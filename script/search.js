@@ -23,7 +23,7 @@ async function searchMovie(keyword, page) {
         <div class="spinner-border mx-auto" role="status">
             <span class="visually-hidden"</span>
         </div>
-        <p>Loading...</p>
+        <span class="placeholder-wave fg-3">Loading...</span>
     `;
 
     try {

@@ -35,11 +35,11 @@
     <main class="py-5 z-0">
         <h2 class="mb-5 subtitle">Your Watchlist</h2>
         <div class="input-group mb-3 mx-auto" style="width: 90%; max-width: 36rem">
-            <input id="searchInput" type="text" oninput="searchMovie(this.value.trim())" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input id="searchInput" type="text" oninput="searchMovie(this.value.trim())" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Search movie in watchlist..." required>
         </div>
 
         <div class="container text-center mt-5">
-            <div class="row justify-content-center" id="movieGrid">
+            <div class="row g-4 justify-content-center" id="movieGrid">
             </div>
         </div>
     </main>
